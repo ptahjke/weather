@@ -4,5 +4,5 @@ namespace App\Components\Weather\Providers\Interfaces;
 
 interface WeatherProviderInterface
 {
-    public function getResponse();
+    public function getResponse(): WeatherProviderResponseInterface;
 }

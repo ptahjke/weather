@@ -11,15 +11,15 @@ use GuzzleHttp\Client;
  * @property Client $httpClient
  * @property WeatherProviderResponse $response
  */
-abstract class BaseWeatherProvider
+abstract class BaseWeatherProvider implements WeatherProviderInterface
 {
     const PROVIDER_WEATHERBIT = 'weatherbit';
-
-    const EXAMPLE_CITY = 'Sevastopol';
 
     protected $httpClient;
     protected $response;
 
+    // для примера взял один api
+    // так же можно подключить любой другой погодный api
     private static $providers = [
         self::PROVIDER_WEATHERBIT => 'App\Components\Weather\Providers\WeatherbitProvider'
     ];

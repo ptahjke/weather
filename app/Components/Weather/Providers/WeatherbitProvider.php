@@ -2,27 +2,29 @@
 
 namespace App\Components\Weather\Providers;
 
-use App\Components\Weather\Providers\Interfaces\WeatherProviderInterface;
-use App\Components\Weather\Providers\Response\WeatherProviderResponse;
+use App\Components\Weather\Providers\Interfaces\WeatherProviderResponseInterface;
+use App\Components\Weather\Providers\Response\WeatherProviderRowDataResponse;
 
-class WeatherbitProvider
-    extends BaseWeatherProvider
-    implements WeatherProviderInterface
+class WeatherbitProvider extends BaseWeatherProvider
 {
+    // для примера взял наш город
+    // и указал прямую апи ссылку (данные за последние 16 дней)
+    const EXAMPLE_CITY = 'Sevastopol';
+
     private static $apiUrl = 'https://api.weatherbit.io/v2.0/forecast/daily';
 
-    public function getResponse(): WeatherProviderResponse
+    public function getResponse(): WeatherProviderResponseInterface
     {
         $data = $this->getData();
 
         foreach ($data['data'] as $dailyData) {
-            $row = new Response\WeatherProviderRowDataResponse;
+            $row = new WeatherProviderRowDataResponse;
 
-            $row->setDate($dailyData['datetime']);
-            $row->setTemperature($dailyData['temp']);
-            $row->setWindDirection($dailyData['wind_cdir_full']);
-            $row->setWindSpeed($dailyData['wind_spd']);
-            $row->setCity($data['city_name']);
+            $row->setDate((string) ($dailyData['datetime'] ?? ''));
+            $row->setTemperature((float) ($dailyData['temp'] ?? ''));
+            $row->setWindDirection((string) ($dailyData['wind_cdir_full'] ?? ''));
+            $row->setWindSpeed((float) ($dailyData['wind_spd'] ?? ''));
+            $row->setCity((string) ($data['city_name'] ?? ''));
 
             $this->response->addRow($row);
         }
